@@ -8,7 +8,6 @@ from facefusion import ffmpeg
 from facefusion import logger, process_manager, state_manager, translator, video_manager
 from facefusion.audio import create_empty_audio_frame, get_audio_frame, get_voice_frame
 from facefusion.common_helper import get_first
-from facefusion.content_analyser import analyse_video
 from facefusion.filesystem import filter_audio_paths, is_video
 from facefusion.processors.core import get_processors_modules
 from facefusion.temp_helper import clear_temp_directory, create_temp_directory, move_temp_file, resolve_temp_frame_paths
@@ -44,9 +43,7 @@ def process(start_time : float) -> ErrorCode:
 def setup() -> ErrorCode:
 	trim_frame_start, trim_frame_end = restrict_trim_frame(state_manager.get_item('target_path'), state_manager.get_item('trim_frame_start'), state_manager.get_item('trim_frame_end'))
 
-	if analyse_video(state_manager.get_item('target_path'), trim_frame_start, trim_frame_end):
-		return 3
-
+	# NSFW check disabled - all content is allowed
 	logger.debug(translator.get('clearing_temp'), __name__)
 	clear_temp_directory(state_manager.get_item('target_path'))
 	logger.debug(translator.get('creating_temp'), __name__)
@@ -191,6 +188,7 @@ def finalize_video(start_time : float) -> ErrorCode:
 
 	if is_video(state_manager.get_item('output_path')):
 		logger.info(translator.get('processing_video_succeeded').format(seconds = calculate_end_time(start_time)), __name__)
+		logger.info('Output file: ' + state_manager.get_item('output_path'), __name__)
 	else:
 		logger.error(translator.get('processing_video_failed'), __name__)
 		return 1

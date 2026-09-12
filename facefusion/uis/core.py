@@ -96,7 +96,7 @@ def launch() -> None:
 
 	for ui_layout in state_manager.get_item('ui_layouts'):
 		ui_layout_module = load_ui_layout_module(ui_layout)
-		ui_layout_module.run(ui)
+		ui.launch(server_name="0.0.0.0", server_port=7860)
 
 
 def get_theme() -> gradio.Theme:

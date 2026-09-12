@@ -5,3 +5,7 @@ __pycache__
 .idea
 .jobs
 .vscode
+venv/
+*.onnx
+models/
+*.pyc

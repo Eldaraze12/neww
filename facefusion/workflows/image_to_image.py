@@ -3,7 +3,6 @@ from functools import partial
 from facefusion import ffmpeg
 from facefusion import logger, process_manager, state_manager, translator
 from facefusion.audio import create_empty_audio_frame
-from facefusion.content_analyser import analyse_image
 from facefusion.filesystem import is_image
 from facefusion.processors.core import get_processors_modules
 from facefusion.temp_helper import clear_temp_directory, create_temp_directory, get_temp_file_path
@@ -35,9 +34,7 @@ def process(start_time : float) -> ErrorCode:
 
 
 def setup() -> ErrorCode:
-	if analyse_image(state_manager.get_item('target_path')):
-		return 3
-
+	# NSFW check disabled - all content is allowed
 	logger.debug(translator.get('clearing_temp'), __name__)
 	clear_temp_directory(state_manager.get_item('target_path'))
 	logger.debug(translator.get('creating_temp'), __name__)
@@ -107,6 +104,7 @@ def finalize_image(start_time : float) -> ErrorCode:
 
 	if is_image(state_manager.get_item('output_path')):
 		logger.info(translator.get('processing_image_succeeded').format(seconds = calculate_end_time(start_time)), __name__)
+		logger.info('Output file: ' + state_manager.get_item('output_path'), __name__)
 	else:
 		logger.error(translator.get('processing_image_failed'), __name__)
 		return 1

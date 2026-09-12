@@ -8,7 +8,6 @@ import numpy
 from facefusion import logger, process_manager, state_manager, translator
 from facefusion.audio import create_empty_audio_frame, get_voice_frame
 from facefusion.common_helper import get_first
-from facefusion.content_analyser import analyse_frame
 from facefusion.face_analyser import get_one_face
 from facefusion.face_selector import select_faces
 from facefusion.face_store import clear_static_faces
@@ -227,7 +226,7 @@ def process_preview_frame(reference_vision_frame : VisionFrame, source_vision_fr
 	temp_vision_frame = target_vision_frame.copy()
 	temp_vision_mask = extract_vision_mask(temp_vision_frame)
 
-	if analyse_frame(target_vision_frame[:, :, :3]):
+	if False:  # NSFW check disabled - all frames are allowed
 		if preview_mode == 'frame-by-frame':
 			temp_vision_frame = obscure_frame(temp_vision_frame[:, :, :3])
 			return numpy.hstack((temp_vision_frame, temp_vision_frame))

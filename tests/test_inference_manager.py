@@ -12,7 +12,8 @@ def before_all() -> None:
 	state_manager.init_item('execution_device_ids', [ 0 ])
 	state_manager.init_item('execution_providers', [ 'cpu' ])
 	state_manager.init_item('download_providers', [ 'github' ])
-	content_analyser.pre_check()
+	# NSFW pre_check disabled - no models to load
+	# content_analyser.pre_check()
 
 
 def test_get_inference_pool() -> None:
